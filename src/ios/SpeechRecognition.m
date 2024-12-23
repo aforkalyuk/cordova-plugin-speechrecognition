@@ -25,7 +25,6 @@
 @property (strong, nonatomic) SFSpeechAudioBufferRecognitionRequest *recognitionRequest;
 @property (strong, nonatomic) SFSpeechRecognitionTask *recognitionTask;
 @property float averagePowerForChannel0;
-@property bool isMeteringEnabled;
 
 @end
 
@@ -149,16 +148,12 @@
         [inputNode installTapOnBus:0 bufferSize:1024 format:format block:^(AVAudioPCMBuffer *buffer, AVAudioTime *when) {
             [self.recognitionRequest appendAudioPCMBuffer:buffer];
             [buffer setFrameLength:1024];
-            if (self.isMeteringEnabled) {
-                [self audioMetering:buffer];
-            }
+            [self audioMetering:buffer];
         }];
 
         [self.audioEngine prepare];
         [self.audioEngine startAndReturnError:nil];
-        [self setMeteringEnabled:YES];
     }];
-
 }
 
 - (void)stopListening:(CDVInvokedUrlCommand*)command {
@@ -261,10 +256,6 @@
         double value = avgValue != 0 ? log10f(avgValue) * 20 + 40 : 0;
         self.averagePowerForChannel0 = value;
     }
-}
-
-- (void)setMeteringEnabled:(BOOL)enabled {
-    self.isMeteringEnabled = enabled;
 }
 
 @end
