@@ -253,7 +253,7 @@
         Float32* samples = (Float32*)buffer.floatChannelData[0];
         Float32 avgValue = 0;
         vDSP_meamgv((Float32*)samples, 1, &avgValue, inNumberFrames);
-        double value = avgValue != 0 ? log10f(avgValue) * 20 + 40 : 0;
+        double value = avgValue != 0 ? log10f(avgValue) * 20 : 0;
         self.averagePowerForChannel0 = value;
     }
 }
